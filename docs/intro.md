@@ -3,20 +3,41 @@ sidebar_position: 1
 title: Getting started
 ---
 
-`http-react-fetcher` is a library for data fetching in React applications.
+`http-react` is a library for declarative data fetching in React.
 
 
-To install it:
+### Overview
 
-```bash
-yarn add http-react-fetcher
+With one hook call, you get all the information about a request, and you can start making UIs that are more consistent and performant:
+
+```jsx
+import useFetch from 'http-react'
+
+export default function App() {
+  const { data, loading, error } = useFetch('/api/user-info')
+
+  if (loading) return <p>Loading</p>
+  
+  if (error) return <p>An error ocurred</p>
+
+  return <h2>Welcome, {data.name}</h2>
+}
 ```
 
-Remember to wrap your app with the `FetcherConfig` component (this is optional, and you don't need it if the API's base url is the same as your website), which you can use to set global configurations like headers, defaults, refresh rate, etc.
+### Installation
+
+```bash
+yarn add http-react
+```
+
+### Optional
+Wrap your app with the `FetcherConfig` component (you don't need it if the base url is the same domain).
+
+You you can use it to set global configurations like cache, headers, defaults, configure suspense for certain requests, etc.
 
 
 ```jsx
-import { FetcherConfig } from 'http-react-fetcher'
+import { FetcherConfig } from 'http-react'
 
 export default function App(){
   return (

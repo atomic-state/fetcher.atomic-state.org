@@ -8,5 +8,5 @@
 yarn add http-react-fetcher
 ```
 
-[Getting started](https://fetcher.atomic-state.org/docs/intro)
+[Getting started](https://http-react.netlify.app/docs/intro)
 

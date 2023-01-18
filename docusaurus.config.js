@@ -1,14 +1,14 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const lightCodeTheme = require("prism-react-renderer/themes/github")
-const darkCodeTheme = require("prism-react-renderer/themes/dracula")
+const lightCodeTheme = require("prism-react-renderer/themes/oceanicNext")
+const darkCodeTheme = require("prism-react-renderer/themes/oceanicNext")
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: "Http React Fetcher",
+  title: "Http React",
   tagline: "React hooks for data fetching",
-  url: "http://fetcher.atomic-state.org",
+  url: "https://http-react.netlify.app",
   baseUrl: "/",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
@@ -17,7 +17,7 @@ const config = {
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: "atomic-state", // Usually your GitHub org/user name.
-  projectName: "http-react-fetcher", // Usually your repo name.
+  projectName: "http-react", // Usually your repo name.
 
   // Even if you don't use internalization, you can use this field to set useful
   // metadata like html lang. For example, if your site is Chinese, you may want
@@ -55,7 +55,7 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: "Http React Fetcher",
+        title: "Http React",
         logo: {
           alt: "Site logo",
           src: "img/atomic-state.png",
@@ -69,7 +69,7 @@ const config = {
           },
           { to: "/blog", label: "Blog", position: "left" },
           {
-            href: "https://github.com/atomic-state/http-react-fetcher",
+            href: "https://github.com/atomic-state/http-react",
             label: "GitHub",
             position: "right",
           },
@@ -92,7 +92,7 @@ const config = {
             items: [
               {
                 label: "Stack Overflow",
-                href: "https://stackoverflow.com/questions/tagged/http-react-fetcher",
+                href: "https://stackoverflow.com/questions/tagged/http-react",
               },
               // {
               //   label: "Discord",
@@ -113,7 +113,7 @@ const config = {
               },
               {
                 label: "GitHub",
-                href: "https://github.com/atomic-state",
+                href: "https://github.com/atomic-state/http-react",
               },
             ],
           },
