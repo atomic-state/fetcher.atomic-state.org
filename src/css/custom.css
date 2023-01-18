@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400&display=swap");
 /**
  * Any CSS included here will be global. The classic template
  * bundles Infima by default. Infima is a CSS framework designed to
@@ -5,22 +7,18 @@
  */
 
 /* You can override the default Infima variables here. */
+.prism-code {
+  font-family: "Fira code", monospace;
+}
 :root {
-  --ifm-color-primary: #33206c;
-  --ifm-color-primary-dark: #33347c;
-  --ifm-color-primary-darker: #333588;
-  --ifm-color-primary-darkest: #3344a8;
-  --ifm-color-primary-light: #3348b8;
-  --ifm-color-primary-lighter: #3354d6;
-  --ifm-color-primary-lightest: #335de7;
+  font-family: "Inter", sans-serif;
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 }
 
+
 /* For readability concerns, you should choose a lighter palette in dark mode. */
-[data-theme='dark'] {
-  --ifm-color-primary: #6542d0;
-  --ifm-color-primary-dark: #5558e1;
+[data-theme="dark"] {
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 }
