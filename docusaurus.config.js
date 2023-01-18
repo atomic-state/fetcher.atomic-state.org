@@ -8,7 +8,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/oceanicNext")
 const config = {
   title: "Http React",
   tagline: "React hooks for data fetching",
-  url: "http://fetcher.atomic-state.org",
+  url: "https://http-react.netlify.app",
   baseUrl: "/",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
@@ -17,7 +17,7 @@ const config = {
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: "atomic-state", // Usually your GitHub org/user name.
-  projectName: "http-react-fetcher", // Usually your repo name.
+  projectName: "http-react", // Usually your repo name.
 
   // Even if you don't use internalization, you can use this field to set useful
   // metadata like html lang. For example, if your site is Chinese, you may want
