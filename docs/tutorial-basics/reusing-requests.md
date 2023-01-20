@@ -4,18 +4,22 @@ sidebar_position: 2
 
 # Reusing requests
 
-If you want to use the same request in multiple places in your app, you can do so.
+If you want to use the same request in multiple places in your app, you can do so. Internally, `http-react` knows the current state of a request, whether they are loading, they completed succesfuly or if the failed, while preventing duplicated requests. This information is shared between any subscribers that use `useFetch` or any of its forms (`useData`, `useLoading`, etc).
 
 
 ```jsx
 import useFetch from 'http-react'
 
-// First, we create a custom hook that returns the user info
-function useUser() {
+// First, we create a custom hook that returns the user info.
+// We can pass any other configuration we want to send in
+// the request (like 'keepalive')
+
+function useUserInfo() {
   return useFetch('/api/user-info', {
     headers: {
-      Authorization: "Token my-token"
-    }
+      Authorization: 'Token my-token'
+    },
+    cache: 'only-if-cached'
   })
 }
 
@@ -23,7 +27,7 @@ function useUser() {
 // And we can use that in any component or hook.
 
 function UserInfo() {
-  const { data, loading, error } = useUser()
+  const { data, loading, error } = useUserInfo()
 
   if (loading) return <p>Loading</p>
 
@@ -37,7 +41,7 @@ function UserInfo() {
 }
 
 function AccountBalance() {
-  const { data, loading, error } = useUser()
+  const { data, loading, error } = useUserInfo()
 
   if (loading) return <p>Loading account balance</p>
 
@@ -64,23 +68,23 @@ export default function Page() {
 That request will be *deduplicated* (See [Data deduplication](https://en.wikipedia.org/wiki/Data_deduplication)). This means that even though we are calling the `useUser` hook multiple times, only one request will be made, and every subscriber using that hook will be notified when the state of the request changes.
 
 You can also use the `useFetchId` hook that returns everything from a request using its id.
-> For this, you would need to pass `'User'` as the request `id` and call the `useUser` hook somewhere in the application (because when you are calling `useFetcherId('User')` you are not passing a url, so no request will be sent!)
 
 ```jsx
 import useFetch, { useFetchId } from 'http-react'
-// First, we create a custom hook that returns the user info
 
-function useUser() {
+// First, we create a custom hook that returns the user info.
+
+function useUserInfo() {
   return useFetch('/api/user-info', {
-    id: 'User',
     headers: {
-      Authorization: "Token my-token"
-    }
+      Authorization: 'Token my-token'
+    },
+    cache: 'only-if-cached'
   })
 }
 
 function AccountBalance() {
-  const { data, loading, error } = useFetchId('User')
+  const { data, loading, error } = useFetchId('GET /api/user-info')
 
   if (loading) return <p>Loading account balance...</p>
 
@@ -93,11 +97,12 @@ function AccountBalance() {
   )
 }
 
-// This will initialize the request invalidation process, which will be
-// propagated to all of its subscribers (above and below the react tree)
+// This will initialize the request revalidation process, which will be
+// propagated to all of its subscribers (above and below the react tree).
+// (See be below)
 
 function InitializeUserRequest() {
-  useUser()
+  useUserInfo()
   return null
 }
 
@@ -111,13 +116,13 @@ export default function App() {
 }
 ```
 
-That example can even be reduced if the `useUser` hook would be used only in those components, so we can safely remove it:
+That example can even be reduced if the `useUserInfo` hook would be used only in those components, so we can safely remove it:
 
 ```jsx
 import useFetch, { useFetchId } from 'http-react'
 
 function AccountBalance() {
-  const { data, loading, error } = useFetchId('User')
+  const { data, loading, error } = useFetchId('GET /api/user-info')
 
   if (loading) return <p>Loading account balance...</p>
 
@@ -131,8 +136,9 @@ function AccountBalance() {
 }
 
 
-// This will initialize the request invalidation process, which will be
+// This will initialize the request revalidation process, which will be
 // propagated to all of its subscribers (above and below the react tree)
+// (See be below)
 
 function InitializeUserRequest() {
   useFetch('/api/user-info', {
