@@ -22,30 +22,3 @@ export default function App() {
 
   return <h2>Welcome, {data.name}</h2>
 }
-```
-
-### Installation
-
-```bash
-yarn add http-react
-```
-
-### Optional
-Wrap your app with the `FetcherConfig` component (you don't need it if the base url is the same domain).
-
-You you can use it to set global configurations like cache, headers, defaults, configure suspense for certain requests, etc.
-
-
-```jsx
-import { FetcherConfig } from 'http-react'
-
-export default function App(){
-  return (
-    <FetcherConfig>
-      <div>
-        <h2>My app</h2>
-      </div>
-    </FetcherConfig>
-  )
-}
-```
