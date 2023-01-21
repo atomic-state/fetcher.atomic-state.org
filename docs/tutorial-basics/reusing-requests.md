@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Reusing requests
 
-If you want to use the same request in multiple places in your app, you can do so. Internally, `http-react` knows the current state of a request, whether they are loading, they completed succesfuly or if the failed, while preventing duplicated requests. This information is shared between any subscribers that use `useFetch` or any of its forms (`useData`, `useLoading`, etc).
+If you want to use the same request in multiple places in your app, you can do so. Internally, `http-react` knows the current state of a requests, whether they are loading, they completed succesfuly or if the failed, while preventing duplicated requests. This information is shared between any subscribers that use `useFetch` or any of its forms (`useData`, `useLoading`, etc).
 
 
 ```jsx
@@ -19,7 +19,8 @@ function useUserInfo() {
     headers: {
       Authorization: 'Token my-token'
     },
-    cache: 'only-if-cached'
+    cache: 'only-if-cached',
+    mode: 'cors'
   })
 }
 
@@ -79,7 +80,8 @@ function useUserInfo() {
     headers: {
       Authorization: 'Token my-token'
     },
-    cache: 'only-if-cached'
+    cache: 'only-if-cached',
+    mode: 'cors'
   })
 }
 
@@ -97,8 +99,8 @@ function AccountBalance() {
   )
 }
 
-// This will initialize the request revalidation process, which will be
-// propagated to all of its subscribers (above and below the react tree).
+// This will initialize the request revalidation process,
+// which will be propagated to all of its subscribers
 // (See be below)
 
 function InitializeUserRequest() {
@@ -136,8 +138,8 @@ function AccountBalance() {
 }
 
 
-// This will initialize the request revalidation process, which will be
-// propagated to all of its subscribers (above and below the react tree)
+// This will initialize the request revalidation process,
+// which will be propagated to all of its subscribers
 // (See be below)
 
 function InitializeUserRequest() {
@@ -145,7 +147,8 @@ function InitializeUserRequest() {
     id: 'User',
     headers: {
       Authorization: "Token my-token"
-    }
+    },
+    mode: 'cors'
   })
 
   return null
