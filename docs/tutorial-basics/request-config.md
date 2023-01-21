@@ -2,12 +2,15 @@
 sidebar_position: 3
 ---
 # Request config
+> This documentation only covers configuration specific to `http-react`, not the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API). If you want to learn more about it, check out [Using the Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)
 
-You can configure how data is fetched and decide what to do when certain events happen.
+
+
+By passing additional configuration to `useFetch`, you can configure how data is fetched or decide what to do when certain events happen.
 
 ### `url`
 
-This is the most important part of the request, and you can use it in two ways:
+This is the most important part of the request, and you can pass it in two ways:
 
 ```js
 const { data } = useFetch('/api')
@@ -17,16 +20,16 @@ Or
 
 ```js
 const { data } = useFetch({ url: '/api' })
-```
+``` 
 
 ### `id`
 
-An optional unique id for requests. It can be anything that can be serialized. If `id` is not provided, an id will be created internally using the request `method` and the `url`. For example:
+  An optional unique id for the request. It can be anything that can be serialized. If `id` is not provided, an id will be created internally using the request `method` and the `url`. For example:
 
 ```jsx
 useFetch('/api', { id: 'API' })
 ```
-> The default id of this request, if not provided, will be `GET /api`
+> The id of that request will be `API`. If we wouldn't have passed it, it would be `GET /api`
 
 ### `default`
 
@@ -95,7 +98,7 @@ const { data } = useFetch('/todos/[id]', {
   }
 })
 ```
-> The url will be `/todos/3`, but the `id` will be `GET /todos/[id]`
+> The url will be `/todos/3`, and the request id will be `GET /todos/[id]`
 
 You can also use `:`
 ```jsx
@@ -128,7 +131,19 @@ That will show you a warning in the console that will say `Param 'resource' does
 
 > The url will be `resource/3`, and the `id` will be `POST /[resource]:id`
 
+<br />
 
+http-react also exposes a helper function to parse request params present in a string. For example:
+
+```jsx
+import { setURLParams } from 'http-react'
+
+const userParams = { path: 'users', id: 10 }
+
+const userUrl = setURLParams('/api/[path]/[id]', userParams) // --> /api/users/10
+
+```
+> Params must be separated using `/`
 
 ### `query`
 The request search params
@@ -202,7 +217,7 @@ useFetch('/api', {
   }
 })
 ```
-You can also use the `useResolve` function to subscribe to requests and do something when they complete susccesfuly (like a useEffect). For this, pass the request id to `onResolve`:
+You can also use the `useResolve` function to subscribe to requests and do something when they complete susccesfuly (this works like a useEffect that runs when the request completes). For this, pass the request id to `onResolve`:
 
 ```jsx
 // somewhere in a component
@@ -215,7 +230,28 @@ useResolve('POST /api', data => {
 })
 ```
 
+**Important**
 
+`onResolve` will only run one time when the request completes, even if we are re-using a request in multiple components. This ensures that operations that depend on `onResolve` run only once.
+
+If you want to do any operations that can't be place in the `onResolve` function for any reason, you can use the `useResolve` hook instead. This example subscribes three handlers to a request with id `POST /api`:
+
+```js
+
+const requestId = 'POST /api'
+
+useResolve(requestId, data => {
+  console.log('Data was fetched from another component', data)
+})
+
+useResolve(requestId, data => {
+  console.log('Another subscriber', data)
+})
+
+useResolve(requestId, data => {
+  console.log('Next.js is awesome!', data)
+})
+```
 
 ### `onError`
 
@@ -232,11 +268,11 @@ useFetch('/api', {
 Same as `onResolve`, you can subscribe to the `error` state somewhere else in your app:
 
 ```jsx
-// somewhere in our app
+// somewhere in your app
 useFetch('/api', { method: 'POST' })
 
 
-// Somewhere else in our app
+// Somewhere else in your app
 const error = useError('POST /api', () => {
   console.log('An error ocurred in this request')
 })
@@ -325,6 +361,7 @@ return (
   </div>
 )
 ```
+> Don't set `auto` to `false` and `suspense` to `true` in the same request, because it will never be sent!
 
 ### `refresh`
 
@@ -332,7 +369,6 @@ This tells `useFetch` how many seconds should pass after a request is completed 
 This doesn't mean that a request will be sent every `n` seconds, it means that a new request will be sent `n` seconds after the current request is completed.
 
 ```jsx
-
 // This will revalidate 5 seconds after the last request completes
 const { data } = useFetch('/api', { refresh: 5, default: {} })
 
@@ -531,7 +567,7 @@ function App() {
 
 ### `suspense`
 
-`Suspense` is used when you want to pause the rendering of the UI and resume it after the data needed for rendering it is ready. This is very useful if, for example, you want to wait until all requests are completed to render the UI to the user, or to leverage the loading state of the UI to `<React.Suspense>`. If you want to use Suspense, pass `suspense` to the `useFetch` config:
+`Suspense` is used when you want to pause the rendering of a component and resume it until the data needed for rendering it is ready. This is very useful if, for example, you want to wait until all requests are completed to render the UI to the user, or to leverage the loading state of the UI to `<React.Suspense>`. If you want to use Suspense, pass `suspense` to the `useFetch` config:
 
 ```jsx
 import { Suspense } from 'react'
@@ -574,7 +610,6 @@ If you are using SSR, it's recommended that you use `SSRSuspense`. It's a wrappe
 
 ```jsx
 import useFetch, { SSRSuspense } from 'http-react'
-
 
 function Profile() {
   const { data } = useFetch('/api/v2/profile', {
